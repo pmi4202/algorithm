@@ -16,6 +16,7 @@ public class Main {
                 sb.append(i-1_000_000).append("\n");
             }
         }
+        
         System.out.println(sb);
     }
 }
