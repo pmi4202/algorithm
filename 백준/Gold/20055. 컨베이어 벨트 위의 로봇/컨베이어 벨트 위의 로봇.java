@@ -1,62 +1,51 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.StringTokenizer;
-import java.util.Queue;
 
 public class Main {
-    static int N, K, belt[], s, m, e, beltLen; //--K==0이면 종료
-    static boolean isExist[];//각 칸에 로봇이 존재하는지 여부
+    static int N, K, belt[]; //--K==0이면 종료
+    static boolean robots[];//각 칸에 로봇이 존재하는지 여부
     
     public static int simulation(){
         int step = 0;
-        Queue<Integer> robots = new LinkedList<>();//로봇의 위치를 저장
 
-        outloop : while(true){
-            step++;
+        while(K > 0){
+            step ++;
 
             //1. 벨트 이동
-            s = (s+beltLen-1)%beltLen;
-            e = (e+beltLen-1)%beltLen;
-            m = (s + N - 1)%beltLen;//내리는 위치
-            isExist[m] = false;
-            
+            int temp = belt[2*N-1];
+            for(int i=2*N-1; i>0; i--){
+                belt[i] = belt[i-1];
+            }
+            belt[0] = temp;
+
             //2. 로봇 이동
-            for(int size = robots.size(); size>0; size--){
-                int pos = robots.poll();
-                if(pos == m){//내렸음
+            robots[N-1] = robots[N-2] = false;
+            for(int i=N-1; i>1 ; i--){
+                if(!robots[i-2] || robots[i] || belt[i] <= 0){ 
+                    if(robots[i-2]){
+                        robots[i-1] = true;
+                        robots[i-2] = false;
+                    }
                     continue;
                 }
-                //이동이 불가능한 경우 = 기존 위치 유지
-                int nextPos = (pos+1)%beltLen;
-                if(isExist[nextPos] || belt[nextPos] <= 0){
-                    robots.add(pos);
-                    continue;
-                }
-                //이동이 가능한 경우
-                isExist[pos] = false;
-                if(--belt[nextPos] == 0){
-                    K--;
-                }
-                if(nextPos != m){
-                    isExist[nextPos] = true;
-                    robots.add(nextPos);
-                }
-
-            }
-            //3. 로봇 올리기
-            if(!isExist[s] && belt[s] > 0){
-                isExist[s] = true;
-                robots.add(s);
-                if(--belt[s] == 0){
+                robots[i] = true;
+                robots[i-2] = false;
+                if(--belt[i] == 0){
                     K--;
                 }
             }
 
-            //4.
-            if(K <= 0){
-                break;
+            //3. 시작점
+            if(!robots[0] && belt[0] > 0){
+                robots[0] = true;
+                if(--belt[0] == 0){
+                    K--;
+                }
             }
+//            System.out.println(Arrays.toString(belt));
+//            System.out.println(Arrays.toString(robots));
         }
 
         return step;
@@ -67,17 +56,14 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
-        beltLen = 2*N;
-        belt = new int[beltLen];
-        isExist = new boolean[beltLen];
+        belt = new int[2*N];
+        robots = new boolean[N];
 
         st = new StringTokenizer(br.readLine());
-        for(int i=0; i<beltLen; i++){
+        for(int i=0; i<2*N; i++){
             belt[i] = Integer.parseInt(st.nextToken());
         }
 
-        s = 0;
-        e = beltLen-1;
         System.out.println(simulation());
     }
 }
