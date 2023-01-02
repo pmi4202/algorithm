@@ -1,11 +1,10 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
     static int N, K, belt[]; //--K==0이면 종료
-    static boolean robots[];//각 칸에 로봇이 존재하는지 여부
+    static boolean robots[];
     
     public static int simulation(){
         int step = 0;
@@ -13,14 +12,14 @@ public class Main {
         while(K > 0){
             step ++;
 
-            //1. 벨트 이동
+            //1
             int temp = belt[2*N-1];
             for(int i=2*N-1; i>0; i--){
                 belt[i] = belt[i-1];
             }
             belt[0] = temp;
 
-            //2. 로봇 이동
+            //2
             robots[N-1] = robots[N-2] = false;
             for(int i=N-1; i>1 ; i--){
                 if(!robots[i-2] || robots[i] || belt[i] <= 0){ 
@@ -37,15 +36,13 @@ public class Main {
                 }
             }
 
-            //3. 시작점
+            //3
             if(!robots[0] && belt[0] > 0){
                 robots[0] = true;
                 if(--belt[0] == 0){
                     K--;
                 }
             }
-//            System.out.println(Arrays.toString(belt));
-//            System.out.println(Arrays.toString(robots));
         }
 
         return step;
