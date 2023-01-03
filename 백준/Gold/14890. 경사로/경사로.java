@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 public class Main {
     static int N, L;
     static int[][] arr;
-    static boolean[] visited;
     static int result;
 
     public static void main(String[] args) throws Exception {
@@ -15,7 +14,6 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         L = Integer.parseInt(st.nextToken());
         arr = new int[N][N];
-        visited = new boolean[N];
         result = 0;
 
         for(int i = 0; i < N; i++) {
