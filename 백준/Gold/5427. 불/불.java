@@ -11,8 +11,6 @@ public class Main {
     static char[][] arr;
     static Queue<int[]> q;
 
-
-
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
