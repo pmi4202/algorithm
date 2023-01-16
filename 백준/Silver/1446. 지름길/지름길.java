@@ -5,10 +5,11 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    public  static class Road implements Comparable<Road>{
+    public static class Road implements Comparable<Road> {
         int start;
         int end;
         int distance;
+
         public Road(int start, int end, int distance) {
             this.start = start;
             this.end = end;
@@ -27,13 +28,13 @@ public class Main {
 
         int N = Integer.parseInt(st.nextToken());
         int D = Integer.parseInt(st.nextToken());
-        int result[] = new int[D+1];
+        int result[] = new int[D + 1];
         Arrays.fill(result, Integer.MAX_VALUE);
         result[0] = 0;
 
         Road[] roads = new Road[N];
 
-        for(int i=0; i<N; i++){
+        for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             roads[i] = new Road(
                     Integer.parseInt(st.nextToken()),
@@ -43,10 +44,10 @@ public class Main {
         Arrays.sort(roads);
 
         int idx = 0;
-        for(int i=0; i<D; i++){
+        for (int i = 0; i < D; i++) {
 
-            while(idx < N && roads[idx].start == i) {
-                if(roads[idx].end > D) {
+            while (idx < N && roads[idx].start == i) {
+                if (roads[idx].end > D) {
                     idx++;
                     continue;
                 }
