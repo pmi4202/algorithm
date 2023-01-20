@@ -26,37 +26,30 @@ public class Main {
             operation[i] = Integer.parseInt(st.nextToken());
         }
 
-        calculator(1, arr[0]);
+        calculator(1, arr[0], operation[0], operation[1], operation[2], operation[3]);
 
-        System.out.println(max +"\n" +min);
+        System.out.println(max);
+        System.out.println(min);
     }
 
-    public static void calculator(int idx, int num){
-        if(idx >= N){
+    public static void calculator(int idx, int num, int plus, int minus, int mul, int div){
+        if(idx == N){
             min = Math.min(min, num);
             max = Math.max(max, num);
             return;
         }
 
-        if(operation[0] > 0){
-            operation[0]--;
-            calculator(idx+1, num + arr[idx]);
-            operation[0]++;
+        if(plus > 0){
+            calculator(idx + 1, num + arr[idx], plus -1, minus, mul, div);
         }
-        if(operation[1] > 0){
-            operation[1]--;
-            calculator(idx+1, num - arr[idx]);
-            operation[1]++;
+        if(minus > 0){
+            calculator(idx + 1, num - arr[idx], plus, minus-1, mul, div);
         }
-        if(operation[2] > 0){
-            operation[2]--;
-            calculator(idx+1, num * arr[idx]);
-            operation[2]++;
+        if(mul > 0){
+            calculator(idx + 1, num * arr[idx], plus, minus, mul - 1, div);
         }
-        if(operation[3] > 0){
-            operation[3]--;
-            calculator(idx+1, num / arr[idx]);
-            operation[3]++;
+        if(div > 0){
+            calculator(idx + 1, num / arr[idx], plus, minus, mul, div - 1);
         }
     }
 
