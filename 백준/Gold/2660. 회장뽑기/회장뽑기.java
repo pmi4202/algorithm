@@ -35,22 +35,22 @@ public class Main {
             }
         }
 
-        StringBuilder sb = null;
-        int cnt = 0, min = INF;
+        int score[] = new int[N+1];
+        int min = INF;
         for(int i=1; i<=N; i++){
-            int score = 0;
             for(int j=1; j<=N; j++){
                 if(matrix[i][j]>=INF){continue;}
-                score = Math.max(score, matrix[i][j]);
+                score[i] = Math.max(score[i], matrix[i][j]);
             }
-            if(score < min){
-                min = score;
-                sb = new StringBuilder();
-                cnt = 1;
-                sb.append(i);
-            } else if (score == min) {
+            min = Math.min(min, score[i]);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int cnt = 0;
+        for(int i=1; i<=N; i++){
+            if(score[i] == min){
                 cnt++;
-                sb.append(" ").append(i);
+                sb.append(i).append(" ");
             }
         }
         System.out.println(min + " " + cnt);
