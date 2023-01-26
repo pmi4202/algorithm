@@ -9,7 +9,7 @@ public class Main {
         if(dif >= 2){//다른 문자가 2개 이상이면
             return;
         }
-        if(left > right){
+        if(left >= right){
             result = Math.min(result, dif);
             return;
         }
