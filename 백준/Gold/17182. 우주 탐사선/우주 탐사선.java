@@ -1,19 +1,12 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
 
     static int N, map[][], result;
+    
     public static void permutation(int start, int time, int visited){
-
-//        if(min[visited] < time){
-//            return;
-//        }
-//        else{
-//            min[visited] = time;
-//        }
         if(visited == (1<<N)-1){
             result = Math.min(result, time);
             return;
@@ -51,9 +44,6 @@ public class Main {
         }
 
         //순열 탐색
-//        min = new int[(1<<N)];
-//        Arrays.fill(min, 10001);
-//        min[(1<<K)] = 0;
         result = 10001;
         permutation(K, 0, (1<<K));
         System.out.println(result);
