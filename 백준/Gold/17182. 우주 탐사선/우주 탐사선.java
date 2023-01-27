@@ -37,6 +37,7 @@ public class Main {
         //Floyd Warshall
         for(int k=0; k<N; k++){
             for(int i=0; i<N; i++){
+                if(i==k){continue;}
                 for(int j=0; j<N; j++){
                     map[i][j] = Math.min(map[i][j], map[i][k] + map[k][j]);
                 }
