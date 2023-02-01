@@ -3,8 +3,6 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-// 1-> u -> v -> N
-// 1-> v -> u -> N
 public class Main {
 
     static int N, E;
