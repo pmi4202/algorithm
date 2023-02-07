@@ -11,28 +11,23 @@ public class Main {
         Stack<Integer> stack = new Stack<>();
         stack.add(Integer.parseInt(br.readLine()));
 
+        int max = stack.peek();
         for(int i=1; i<N; i++){
             int now = Integer.parseInt(br.readLine());
+            max = Math.max(max, now);
             //같은 수면 continue
             if(now < stack.peek()){
+                stack.pop();
                 stack.add(now);
             }
             else if(now > stack.peek()){
-                result += now - stack.peek();
-                do{
-                    stack.pop();
-                }while(!stack.isEmpty() && now > stack.peek());
+                result += now - stack.pop();
                 stack.add(now);
             }
         }
 
-        if(stack.size() > 0){
-            int prev = stack.pop();
-            while(!stack.isEmpty()){
-                int next = stack.pop();
-                result += next - prev;
-                prev = next;
-            }
+        while(!stack.isEmpty()){
+            result += max - stack.pop();
         }
 
         System.out.println(result);
