@@ -15,16 +15,12 @@ public class Main {
             int now = Integer.parseInt(br.readLine());
             //같은 수면 continue
             if(now < stack.peek()){
-//                result += stack.peek() - now;
                 stack.add(now);
             }
             else if(now > stack.peek()){
                 result += now - stack.peek();
-//                int prev = now;
                 do{
-                    int temp = stack.pop();
-//                    result += prev - temp;
-//                    prev = temp;
+                    stack.pop();
                 }while(!stack.isEmpty() && now > stack.peek());
                 stack.add(now);
             }
