@@ -3,7 +3,7 @@ import java.io.InputStreamReader;
 
 public class Main {
 
-    static int N, start, cnt;
+    static int N, cnt;
     static int[] arr;
     static boolean[] visited;
     static StringBuilder sb;
@@ -25,16 +25,15 @@ public class Main {
                 sb.append("\n").append(i);
                 continue;
             }
-            start = i;
-            visited[start] = true;
-            dfs(i);
-            visited[start] = false;
+            visited[i] = true;
+            dfs(i, i);
+            visited[i] = false;
         }
         System.out.print(cnt);
         System.out.print(sb);
     }
 
-    public static void dfs(int now){
+    public static void dfs(int start, int now){
         if(arr[now] == start){
             cnt++;
             sb.append("\n").append(start);
@@ -43,7 +42,7 @@ public class Main {
 
         if(!visited[arr[now]]){
             visited[arr[now]] = true;
-            dfs(arr[now]);
+            dfs(start, arr[now]);
             visited[arr[now]] = false;
         }
     }
