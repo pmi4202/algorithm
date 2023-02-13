@@ -20,6 +20,11 @@ public class Main {
         }
 
         for(int i=1; i<=N; i++){
+            if(arr[i] == i){
+                cnt++;
+                sb.append("\n").append(i);
+                continue;
+            }
             start = i;
             visited[start] = true;
             dfs(i);
