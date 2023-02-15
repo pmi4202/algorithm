@@ -27,14 +27,19 @@ public class Main {
     }
 
     public static void solve(){
+        if(map[0][0] == 0){
+            result[0][0][0] = 1;
+        }
+
         for(int i=0; i<N; i++){
             for(int j=0; j<N; j++){
+                int prev = (map[i][j] + 2)%3;
                 //위
                 int x = i - 1;
                 if(0<=x && x<N){
                     for(int k=0; k<=2; k++){
-                        if(k==map[i][j] && result[x][j][(map[i][j] + 2)%3] > 0){
-                            result[i][j][k] = Math.max(result[x][j][k], result[x][j][(map[i][j] + 2)%3] + 1);
+                        if(k==map[i][j] && result[x][j][prev] > 0){
+                            result[i][j][k] = Math.max(result[x][j][k], result[x][j][prev] + 1);
                         }
                         else{
                             result[i][j][k] = result[x][j][k];
@@ -42,12 +47,12 @@ public class Main {
                     }
 
                 }
-                //왼
+                //왼쪽
                 int y = j - 1;
                 if(0<=y && y<N){
                     for(int k=0; k<=2; k++){
-                        if(k==map[i][j] && result[i][y][(map[i][j] + 2)%3] > 0){
-                            int temp = Math.max(result[i][y][k], result[i][y][(map[i][j] + 2)%3] + 1);
+                        if(k==map[i][j] && result[i][y][prev] > 0){
+                            int temp = Math.max(result[i][y][k], result[i][y][prev] + 1);
                             result[i][j][k] = Math.max(result[i][j][k], temp);
                         }
                         else{
