@@ -17,14 +17,13 @@ public class Main {
         for(int i=0; i<N; i++){
             st = new StringTokenizer(br.readLine());
             for(int j=0; j<N; j++){
-                map[i][j] = Integer.parseInt(st.nextToken());
+                map[i][j] = st.nextToken().charAt(0) - '0';
             }
         }
 
         for(int i=0; i<N; i++){
             for(int j=0; j<N; j++){
                 int prev = (map[i][j] + 2)%3;
-                //위
                 int x = i - 1;
                 int y = j - 1;
                 for(int k=0; k<=2; k++){
@@ -33,7 +32,7 @@ public class Main {
                 if(result[i][j][prev]> 0){
                     result[i][j][map[i][j]] = Math.max(result[i][j][map[i][j]], result[i][j][prev] + 1);
                 }
-                
+
                 if(map[i][j] == 0 && result[i][j][0] == 0){
                     result[i][j][0] = 1;
                 }
