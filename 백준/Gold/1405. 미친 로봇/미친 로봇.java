@@ -24,14 +24,14 @@ public class Main {
     }
 
     public static void dfs(int x, int y, int cnt, double p){
-//        if(p==0){
-//            return;
-//        }
         if(cnt == N){
             result += p;
             return;
         }
         for(int i=0; i<4; i++){
+            if(percent[i] == 0){
+                continue;
+            }
             int nx = x + dx[i];
             int ny = y + dy[i];
             if(visited[nx][ny]){continue;}
