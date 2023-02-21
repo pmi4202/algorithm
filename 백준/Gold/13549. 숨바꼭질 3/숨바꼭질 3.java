@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class Main {
@@ -9,30 +10,29 @@ public class Main {
         String[] inputs = br.readLine().split(" ");
         int N = Integer.parseInt(inputs[0]);
         int K = Integer.parseInt(inputs[1]);
+        int[] dp = new int[K+1];
 
-        boolean[] visited = new boolean[100_001];
-        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2)->o1[1]-o2[1]);
-        pq.add(new int[]{N, 0});
-
-         while(!pq.isEmpty()){
-            int[] now = pq.poll();
-            if(now[0] == K){
-                System.out.println(now[1]);
-                break;
-            }
-             
-            visited[now[0]] = true;
-
-            if(now[0] - 1 >= 0 && !visited[now[0] - 1]){
-                pq.add(new int[]{now[0] - 1, now[1] + 1});
-            }
-            if(now[0] + 1 <= 100000 && !visited[now[0] + 1]){
-                pq.add(new int[]{now[0] + 1, now[1] + 1});
-            }
-            if(now[0] * 2 <= 100000 && !visited[now[0]*2]){
-                pq.add(new int[]{now[0]*2, now[1]});
-            }
-
+        if(K <= N){
+            System.out.println(N-K);
         }
+        else{
+            //N보다 작은 값은 빼기로 가는게 가장 빠름
+            for(int i=0; i<N; i++){
+                dp[i] = N-i;
+            }
+            for(int i=N+1; i<=K; i++){
+                dp[i] = dp[i-1] + 1;
+                if(i%2==0){
+                    dp[i] = Math.min(dp[i/2], dp[i-1] + 1);
+                }
+                else{
+                    int min = Math.min(dp[(i-1)/2] + 1, dp[(i+1)/2] + 1);
+                    dp[i] = Math.min(dp[i-1] + 1, min);
+                }
+
+            }
+            System.out.println(dp[K]);
+        }
+
     }
 }
