@@ -20,9 +20,7 @@ public class Main {
                 System.out.println(now[1]);
                 break;
             }
-            if(visited[now[0]]){
-                continue;
-            }
+             
             visited[now[0]] = true;
 
             if(now[0] - 1 >= 0 && !visited[now[0] - 1]){
