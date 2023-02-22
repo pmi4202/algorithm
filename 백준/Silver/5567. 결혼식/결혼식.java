@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 public class Main {
 
@@ -9,25 +8,26 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
         int L = Integer.parseInt(br.readLine());
         int result = 0;
-        ArrayList<Integer>[] adjlist = new ArrayList[N+1];
+        boolean[][] adjmatrix = new boolean[N+1][N+1];
         boolean[] visited = new boolean[N+1];
-
-        for(int i=1; i<=N; i++){
-            adjlist[i] = new ArrayList<>();
-        }
 
         for(int i=0; i<L; i++){
             String[] inputs = br.readLine().split(" ");
             int n1 = Integer.parseInt(inputs[0]);
             int n2 = Integer.parseInt(inputs[1]);
-            adjlist[n1].add(n2);
-            adjlist[n2].add(n1);
+            adjmatrix[n1][n2] = true;
+            adjmatrix[n2][n1] = true;
         }
 
-        for(int now : adjlist[1]){
-            visited[now] = true;
-            for(int next : adjlist[now]){
-                visited[next] = true;
+        visited[1] = true;
+        for(int i=2; i<=N; i++){
+            if(adjmatrix[1][i]) {
+                visited[i] = true;
+                for (int j = 2; j <= N; j++) {
+                    if (adjmatrix[i][j]) {
+                        visited[j] = true;
+                    }
+                }
             }
         }
 
@@ -36,6 +36,7 @@ public class Main {
                 result++;
             }
         }
+
         System.out.println(result);
     }
 }
