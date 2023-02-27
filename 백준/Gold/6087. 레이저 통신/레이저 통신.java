@@ -40,6 +40,7 @@ public class Main {
         Queue<int[]> q = new LinkedList<>();
         //좌표x, y, 들어온 방향, 거울 수
         //시작값 넣기
+        visited[sx][sy][0] = visited[sx][sy][1] = visited[sx][sy][2] = visited[sx][sy][3] = true;
         q.add(new int[]{sx, sy});
 
         int result = -1;
