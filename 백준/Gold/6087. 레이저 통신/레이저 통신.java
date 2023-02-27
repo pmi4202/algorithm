@@ -1,92 +1,82 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int w, h;
-    static char[][] map;
-    static Node[] target = new Node[2];
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, -1, 0, 1};
+    static int h, w;
+    static boolean visited[][][];
+    static char map[][];
 
-    static class Node implements Comparable<Node> {
-        int x, y, dir, mirrors;
+    static class Point implements Comparable<Point> {
+        int x, y, dir, mirror;
 
-        public Node(int x, int y, int dir, int mirrors) {
+        public Point(int x, int y, int dir, int mirror){
             this.x = x;
             this.y = y;
             this.dir = dir;
-            this.mirrors = mirrors;
+            this.mirror = mirror;
         }
 
         @Override
-        public int compareTo(Node o) {
-            return this.mirrors - o.mirrors;
+        public int compareTo(Point o){
+            return this.mirror - o.mirror;
         }
     }
 
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         w = Integer.parseInt(st.nextToken());
         h = Integer.parseInt(st.nextToken());
-
+        visited = new boolean[h][w][4];
         map = new char[h][w];
+        String s;
+        int sx = 0, sy = 0;
 
-
-        for (int i = 0, idx = 0; i < h; i++) {
-            String s = br.readLine();
-            map[i] = s.toCharArray();
-            for (int j = 0; j < w; j++) {
-                if (map[i][j] == 'C') target[idx++] = new Node(i, j, -5, -1);
-            }
-        }
-
-        System.out.println(bfs(target[0]));
-    }
-
-    private static int bfs(Node start) {
-        int min = Integer.MAX_VALUE;
-        Node goal = target[1];
-        PriorityQueue<Node> q = new PriorityQueue<>();
-        int[][][] visited = new int[4][h][w];
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < h; j++) {
-                Arrays.fill(visited[i][j], Integer.MAX_VALUE);
-            }
-        }
-
-        q.offer(start);
-
-        while (!q.isEmpty()) {
-            Node now = q.poll();
-
-            if (now.x == goal.x && now.y == goal.y) {
-                min = Math.min(min, now.mirrors);
-                continue;
-            }
-
-            for (int i = 0; i < 4; i++) {
-                int nextX = now.x + dx[i];
-                int nextY = now.y + dy[i];
-                int nextMirrors = (now.dir == i) ? now.mirrors : now.mirrors + 1;
-                if (!isInRange(nextX, nextY) || map[nextX][nextY] == '*' || Math.abs(now.dir - i) == 2) continue;
-
-                if (visited[i][nextX][nextY] > nextMirrors) {
-                    q.offer(new Node(nextX, nextY, i, nextMirrors));
-                    visited[i][nextX][nextY] = nextMirrors;
+        for(int i=0; i<h; i++) {
+            s = br.readLine();
+            for(int j=0; j<w; j++) {
+                map[i][j] = s.charAt(j);
+                //출발지 & 도착지 저장
+                if(map[i][j]=='C') {
+                    sx = i;
+                    sy = j;
                 }
             }
         }
 
-        return min;
+        map[sx][sy] = '.';
+        System.out.println(bfs(sx, sy));
     }
 
-    private static boolean isInRange(int x, int y) {
-        return x >= 0 && x < h && y >= 0 && y < w;
-    }
+    public static int bfs(int sx, int sy) {
+        int dx[] = {-1, 0, 1, 0}, dy[] = {0, 1, 0, -1};
+        PriorityQueue<Point> pq = new PriorityQueue<>();
+        //좌표x, y, 들어온 방향, 거울 수
+        //시작값 넣기
+        pq.add(new Point(sx, sy, -1, -1));
 
+        while(!pq.isEmpty()) {
+            Point now = pq.poll();
+            //도착지면 stop
+            if(map[now.x][now.y] == 'C') {
+                return now.mirror;
+            }
+
+            for(int i=0; i<4; i++) {
+                int nx = now.x + dx[i];
+                int ny = now.y + dy[i];
+                if(nx<0 || nx>=h || ny<0 || ny>=w || map[nx][ny] == '*' || visited[nx][ny][i]){
+                    continue;
+                }
+                visited[nx][ny][i] = true;
+                int temp = now.mirror;
+                if(now.dir!=i){temp++;}
+                pq.add(new Point(nx, ny, i, temp));
+
+            }
+        }
+        return -1;
+    }
 }
