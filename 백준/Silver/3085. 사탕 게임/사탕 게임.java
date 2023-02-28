@@ -42,36 +42,34 @@ public class Main {
     }
 
     public static void count(int x, int y){
-        //가로
-        char value = map[x][y];
-        int cnt = 1;
+        int r1 = 1, r2 = 1;
+        
         for(int i=y+1; i<N; i++){
-            if(value != map[x][i]){
+            if(map[x][y] != map[x][i]){
                 break;
             }
-            cnt++;
+            r1++;
         }
         for(int i=y-1; i>=0; i--){
-            if(value != map[x][i]){
+            if(map[x][y] != map[x][i]){
                 break;
             }
-            cnt++;
+            r1++;
         }
-        result = Math.max(result, cnt);
 
-        cnt = 1;
         for(int i=x+1; i<N; i++){
-            if(value != map[i][y]){
+            if(map[x][y] != map[i][y]){
                 break;
             }
-            cnt++;
+            r2++;
         }
         for(int i=x-1; i>=0; i--){
-            if(value != map[i][y]){
+            if(map[x][y] != map[i][y]){
                 break;
             }
-            cnt++;
+            r2++;
         }
-        result = Math.max(result, cnt);
+
+        result = Math.max(result, Math.max(r1, r2));
     }
 }
