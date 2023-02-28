@@ -6,7 +6,6 @@ public class Main {
     static int N, result;
     static char[][] map;
 
-
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
@@ -16,10 +15,13 @@ public class Main {
             map[i] = br.readLine().toCharArray();
         }
 
-        for(int i=0; i<N; i++){
+        outloop: for(int i=0; i<N; i++){
             for(int j=0; j<N; j++){
                 count(i, j);
                 solve(i, j);
+                if(result == N){
+                    break outloop;
+                }
             }
         }
 
