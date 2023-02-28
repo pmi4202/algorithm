@@ -15,32 +15,24 @@ public class Main {
             map[i] = br.readLine().toCharArray();
         }
 
-        outloop: for(int i=0; i<N; i++){
+        for(int i=0; i<N; i++){
             for(int j=0; j<N; j++){
-                count(i, j);
-                solve(i, j);
-                if(result == N){
-                    break outloop;
+                if(i < N-1){
+                    swap(i, j, i+1, j);
+                    count(i, j);
+                    count(i+1, j);
+                    swap(i, j, i+1, j);
+                }
+                if(j < N-1){
+                    swap(i, j, i, j+1);
+                    count(i, j);
+                    count(i, j+1);
+                    swap(i, j, i, j+1);
                 }
             }
         }
 
         System.out.println(result);
-    }
-
-    public static void solve(int x, int y){
-        int dx[] = {0, 1}, dy[] = {1, 0};
-        for(int i=0; i<2; i++){
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            if(nx<0 || nx>=N || ny<0 || ny>=N){continue;}
-            if(map[x][y] != map[nx][ny]){
-                swap(x, y, nx, ny);
-                count(x, y);
-                count(nx, ny);
-                swap(x, y, nx, ny);
-            }
-        }
     }
 
     public static void swap(int x1, int y1, int x2, int y2){
@@ -51,30 +43,34 @@ public class Main {
 
     public static void count(int x, int y){
         //가로
-        char prev = map[x][0];
+        char value = map[x][y];
         int cnt = 1;
-        for(int i=1; i<N; i++){
-            if(prev == map[x][i]){
-                cnt++;
+        for(int i=y+1; i<N; i++){
+            if(value != map[x][i]){
+                break;
             }
-            else{
-                result = Math.max(result, cnt);
-                cnt = 1;
-                prev = map[x][i];
+            cnt++;
+        }
+        for(int i=y-1; i>=0; i--){
+            if(value != map[x][i]){
+                break;
             }
+            cnt++;
         }
         result = Math.max(result, cnt);
+
         cnt = 1;
-        prev = map[0][y];
-        for(int i=1; i<N; i++){
-            if(prev == map[i][y]){
-                cnt++;
+        for(int i=x+1; i<N; i++){
+            if(value != map[i][y]){
+                break;
             }
-            else{
-                result = Math.max(result, cnt);
-                cnt = 1;
-                prev = map[i][y];
+            cnt++;
+        }
+        for(int i=x-1; i>=0; i--){
+            if(value != map[i][y]){
+                break;
             }
+            cnt++;
         }
         result = Math.max(result, cnt);
     }
