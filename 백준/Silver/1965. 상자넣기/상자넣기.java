@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -10,20 +9,38 @@ public class Main {
         StringTokenizer st;
         int N = Integer.parseInt(br.readLine());
         int[] arr = new int[N];
-        int[] dp = new int[N];
-        int result = 0;
+        int[] result = new int[N+1];
+        int size = 0;
 
         st = new StringTokenizer(br.readLine());
         for(int i=0; i<N; i++){
             arr[i] = Integer.parseInt(st.nextToken());
-            for(int j=0; j<i; j++){
-                if(arr[j] < arr[i]){
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-                }
+            if(result[size] < arr[i]){
+                result[++size] = arr[i];
             }
-            result = Math.max(result, dp[i]);
+            else{
+                int pos = getPos(result, arr[i], size);
+                result[pos] = arr[i];
+            }
+//            System.out.println(Arrays.toString(result));
         }
 
-        System.out.println(result+1);
+        System.out.println(size);
+
+    }
+
+    //
+    public static int getPos(int[] result, int now, int r){
+        int l = 0;
+        while(l < r){
+            int mid = (l + r)/2;
+            if(result[mid] < now){
+                l = mid + 1;
+            }
+            else{
+                r = mid;
+            }
+        }
+        return l;
     }
 }
