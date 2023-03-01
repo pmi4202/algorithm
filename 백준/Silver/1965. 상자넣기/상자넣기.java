@@ -22,14 +22,13 @@ public class Main {
                 int pos = getPos(result, arr[i], size);
                 result[pos] = arr[i];
             }
-//            System.out.println(Arrays.toString(result));
+            
         }
 
         System.out.println(size);
 
     }
 
-    //
     public static int getPos(int[] result, int now, int r){
         int l = 0;
         while(l < r){
