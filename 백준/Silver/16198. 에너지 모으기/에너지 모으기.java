@@ -5,37 +5,45 @@ import java.util.StringTokenizer;
 public class Main {
 
     static int result;
+    static Node[] nodes;
+
+    static class Node{
+        int prevIdx, val, nextIdx;
+
+        public Node(int prevIdx, int val, int nextIdx){
+            this.prevIdx = prevIdx;
+            this.val = val;
+            this.nextIdx = nextIdx;
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int[] arr = new int[N];
+        nodes = new Node[N];
         for(int i=0; i<N; i++){
-            arr[i] = Integer.parseInt(st.nextToken());
+            nodes[i] = new Node(i-1, Integer.parseInt(st.nextToken()), i+1);
         }
-        solve(arr, N, 0);
+        solve(N-2, 0);
         System.out.println(result);
 
     }
 
-    public static void solve(int[] arr, int size, int energy){
-        if(size == 2){
+    public static void solve(int size, int energy){
+        if(size == 0){
             result = Math.max(result, energy);
             return;
         }
 
-        for(int i=1; i<size-1; i++){
-            int[] newArr =  new int[size - 1];
-            int idx = 0;
-            for(int j=0; j<i; j++){
-                newArr[idx++] = arr[j];
-            }
-
-            for(int j=i+1; j<size; j++){
-                newArr[idx++] = arr[j];
-            }
-            solve(newArr, size - 1, energy + (arr[i-1] * arr[i+1]));
+        int idx = nodes[0].nextIdx;//배열 시작 인덱스값
+        for(int i=0; i<size; i++){
+            nodes[nodes[idx].prevIdx].nextIdx = nodes[idx].nextIdx;
+            nodes[nodes[idx].nextIdx].prevIdx = nodes[idx].prevIdx;
+            solve(size - 1, energy + nodes[nodes[idx].prevIdx].val * nodes[nodes[idx].nextIdx].val);
+            nodes[nodes[idx].prevIdx].nextIdx = idx;
+            nodes[nodes[idx].nextIdx].prevIdx = idx;
+            idx = nodes[idx].nextIdx;
         }
 
     }
