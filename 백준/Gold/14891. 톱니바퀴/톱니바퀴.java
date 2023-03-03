@@ -1,4 +1,3 @@
-import java.awt.image.BufferedImageFilter;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
@@ -52,6 +51,7 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
         while(N-- > 0){
             st = new StringTokenizer(br.readLine());
+            visited = new boolean[4];
             simulation(wheels, Integer.parseInt(st.nextToken())-1, Integer.parseInt(st.nextToken()));
         }
 
@@ -64,32 +64,22 @@ public class Main {
         System.out.println(result);
     }
 
+    static boolean[] visited;
     //no번 톱니바퀴를 dir방향으로 회전
     public static void simulation(Wheel[] wheels, int no, int dir){
-        int prev = wheels[no].getLeft();
-        int d = dir;
-
-        for(int i=no-1; i>=0; i--){
-            if(prev == wheels[i].getRight()){
-                break;
-            }
-            d *= -1;
-            prev = wheels[i].getLeft();
-            wheels[i].turn(d);
+        visited[no] = true;
+        //왼쪽
+        int l = no - 1;
+        if(0 <= l && !visited[l] && wheels[no].getLeft() != wheels[l].getRight()){
+            simulation(wheels, l, dir*-1);
         }
 
-        prev = wheels[no].getRight();
-        d = dir;
-        for(int i=no+1; i<4; i++){
-            if(prev == wheels[i].getLeft()){
-                break;
-            }
-            d = d * -1;
-            prev = wheels[i].getRight();
-            wheels[i].turn(d);
+        //오른쪽
+        int r = no + 1;
+        if(r < 4 && !visited[r] && wheels[no].getRight() != wheels[r].getLeft()){
+            simulation(wheels, r, dir*-1);
         }
 
         wheels[no].turn(dir);
-
     }
 }
