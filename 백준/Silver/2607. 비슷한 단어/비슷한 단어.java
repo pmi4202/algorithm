@@ -7,7 +7,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         int result = 0;
-        int[] cnt = new int[30];
+        int[] cnt = new int[26];
 
         //init
         String input = br.readLine();
@@ -18,24 +18,30 @@ public class Main {
         //solve
         while(N-- > 1){
             String word = br.readLine();
-            int diff = 0, lenGap = Math.abs(word.length() - input.length());
+            int max, min;
+            if(word.length() < input.length()){
+                max = input.length();
+                min = word.length();
+            }
+            else{
+                max = word.length();
+                min = input.length();
+            }
 
-            if(lenGap >= 2){
+            if(max - min >= 2){
                 continue;
             }
 
-            int[] wcnt = new int[30];
+            int same = 0;
+            int[] wcnt = new int[26];
             for(int i=word.length()-1; i>=0; i--){
                 int now = word.charAt(i)-'A';
-                if(++wcnt[now] > cnt[now]){
-                    diff++;
+                if(++wcnt[now] <= cnt[now]){
+                    same++;
                 }
             }
-            if(word.length() < input.length()){
-                diff++;
-            }
 
-            if(diff <= 1){
+            if(Math.abs(same - max) <= 1){
                 result++;
             }
         }
