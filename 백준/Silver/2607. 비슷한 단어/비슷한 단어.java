@@ -11,7 +11,8 @@ public class Main {
 
         //init
         String input = br.readLine();
-        for(int i = input.length()-1; i>=0; i--){
+        int len = input.length();
+        for(int i = 0; i < len; i++){
             cnt[input.charAt(i)-'A']++;
         }
 
@@ -19,13 +20,13 @@ public class Main {
         while(N-- > 1){
             String word = br.readLine();
             int max, min;
-            if(word.length() < input.length()){
-                max = input.length();
+            if(word.length() < len){
+                max = len;
                 min = word.length();
             }
             else{
                 max = word.length();
-                min = input.length();
+                min = len;
             }
 
             if(max - min >= 2){
