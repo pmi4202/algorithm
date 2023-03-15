@@ -4,30 +4,38 @@ import java.io.InputStreamReader;
 public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String s = br.readLine();
-        int len = s.length();
-        StringBuilder result = new StringBuilder();
-        StringBuilder temp = new StringBuilder();
-        for(int i=0; i<len; i++){
-            if(s.charAt(i) == '<'){
-                result.append(temp.reverse());
-                temp = new StringBuilder();
+        char[] input = br.readLine().toCharArray();
+        int len = input.length;
 
-                while(s.charAt(i) != '>'){
-                    result.append(s.charAt(i));
-                    i++;
-                }
-                result.append('>');
+        StringBuilder result = new StringBuilder();
+        int idx = 0;
+        while(idx < len){
+            if(input[idx] == '<'){
+                while(input[++idx] != '>'){}
+                idx++;
             }
-            else if(s.charAt(i) == ' '){
-                result.append(temp.reverse()).append(' ');
-                temp = new StringBuilder();
+            else if(input[idx] == ' '){
+                idx++;
             }
             else{
-                temp.append(s.charAt(i));
+                int start = idx;
+                while(idx < len && input[idx] != ' ' && input[idx] != '<'){
+                    idx++;
+                }
+                int end = idx-1;
+                while(start < end){
+                    char temp = input[start];
+                    input[start] = input[end];
+                    input[end] = temp;
+                    start++;
+                    end--;
+                }
             }
         }
-        result.append(temp.reverse());
+
+        for(char c : input){
+            result.append(c);
+        }
         System.out.println(result);
     }
 }
