@@ -11,11 +11,7 @@ public class Main {
         int idx = 0;
         while(idx < len){
             if(input[idx] == '<'){
-                while(input[++idx] != '>'){}
-                idx++;
-            }
-            else if(input[idx] == ' '){
-                idx++;
+                while(input[idx++] != '>'){}
             }
             else{
                 int start = idx;
@@ -29,6 +25,9 @@ public class Main {
                     input[end] = temp;
                     start++;
                     end--;
+                }
+                if(idx < len && input[idx] == ' '){
+                    idx++;
                 }
             }
         }
