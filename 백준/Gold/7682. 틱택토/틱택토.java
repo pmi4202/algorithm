@@ -1,81 +1,69 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Main {
 
-    static char[] map;
-    static Set<String> set;
-
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        map = new char[9];
-        set = new HashSet<>();
-
-        for(int i=0; i<9; i++){
-            map[i] = '.';
-        }
-
-        solve(0, 'X');
 
         StringBuilder sb = new StringBuilder();
         while(true){
-            String input = br.readLine();
-            if(input.charAt(0) == 'e'){
+            char[] input = br.readLine().toCharArray();
+            if(input[0] == 'e'){
                 break;
             }
-            if(set.contains(input)){
-                sb.append("valid\n");
+
+            //1. 개수 확인
+            int xCnt = 0, oCnt = 0;
+            for(int i=0; i<9; i++){
+                if(input[i] == 'X'){
+                    xCnt++;
+                }
+                else if(input[i] == 'O'){
+                    oCnt++;
+                }
+            }
+
+            boolean xSame = isSame(input, 'X'), oSame = isSame(input, 'O');
+            //2. 일치 여부
+            if(xCnt + oCnt == 9){
+                sb.append((xCnt - oCnt == 1 && !oSame) ? "valid\n" : "invalid\n");
             }
             else{
-                sb.append("invalid\n");
+                if(xCnt - oCnt == 1){//x가 이겨야함
+                    sb.append((xSame && !oSame) ? "valid\n" : "invalid\n");
+                }
+                else if(xCnt == oCnt){
+                    sb.append((oSame && !xSame) ? "valid\n" : "invalid\n");
+                }
+                else{
+                    sb.append("invalid\n");
+                }
             }
+
         }
         System.out.println(sb);
     }
 
-    public static void solve(int cnt, char next){
-        if(cnt == 9 || check()){
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i<9; i++){
-                sb.append(map[i]);
-            }
-            set.add(sb.toString());
-            return;
-        }
-
-        for(int i=0; i<9; i++){
-            if(map[i] != '.') continue;
-            map[i] = next;
-            solve(cnt+1, next == 'O' ? 'X' : 'O');
-            map[i] = '.';
-        }
-    }
-
-    public static boolean check(){
+    public static boolean isSame(char[] input, char c){
         for(int i=0; i<9; i+=3){
-            if(map[i] == '.') continue;
-            if(map[i] == map[i+1] && map[i] == map[i+2]){
+            if(input[i] == c && input[i+1] == c && input[i+2] == c){
                 return true;
             }
         }
 
         for(int i=0; i<3; i++){
-            if(map[i] == '.') continue;
-            if(map[i] == map[i+3] && map[i] == map[i+6]){
+            if(input[i] == c && input[i+3] == c && input[i+6] == c){
                 return true;
             }
         }
 
-        if(map[4] != '.'){
-            if(map[0] == map[4] && map[0] == map[8]){
-                return true;
-            }
+        if(input[0] == c && input[4] == c && input[8] == c){
+            return true;
+        }
 
-            if(map[2] == map[4] && map[2] == map[6]){
-                return true;
-            }
+        if(input[2] == c && input[4] == c && input[6] == c){
+            return true;
         }
 
         return false;
