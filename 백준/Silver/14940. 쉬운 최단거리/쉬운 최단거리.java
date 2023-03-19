@@ -21,14 +21,13 @@ public class Main {
         for(int i=0; i<N; i++){
             st = new StringTokenizer(br.readLine());
             for(int j=0; j<M; j++){
-                result[i][j] = -1;
                 map[i][j] = Integer.parseInt(st.nextToken());
-                if(map[i][j] == 2){
-                    sx = i;
-                    sy = j;
-                }
-                else if(map[i][j] == 0){
-                    result[i][j] = 0;
+                if(map[i][j] != 0){
+                    if(map[i][j] == 2){
+                        sx = i;
+                        sy = j;
+                    }
+                    result[i][j] = -1;
                 }
             }
         }
