@@ -32,9 +32,6 @@ public class Main {
             }
         }
 
-        for(char c : input){
-            result.append(c);
-        }
-        System.out.println(result);
+        System.out.println(input);
     }
 }
