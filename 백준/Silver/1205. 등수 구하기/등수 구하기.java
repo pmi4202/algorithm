@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-//비오름차순 : >=
 public class Main {
 
     static int N, score, P;
@@ -24,21 +23,18 @@ public class Main {
                 arr[i] = Integer.parseInt(st.nextToken());
             }
 
-            System.out.println(getGrade(arr));
+            if(P==N && arr[N]>=score){
+                System.out.println(-1);
+            }
+            else{
+                int idx =  1;
+                while(idx<=N && arr[idx] > score){
+                    idx++;
+                }
+                System.out.println(idx);
+            }
         }
 
     }
 
-    public static int getGrade(int[] arr){
-        int idx =  1;
-        while(idx<=N && arr[idx] > score){
-            idx++;
-        }
-        int grade = idx;
-        while(idx<=N && arr[idx] == score){
-            idx++;
-        }
-
-        return (idx>P) ? -1 : grade;
-    }
 }
