@@ -17,7 +17,7 @@ public class Main {
             System.out.println(1);
         }
         else{
-            int[] arr =  new int[N+2];
+            int[] arr =  new int[N+1];
             st = new StringTokenizer(br.readLine());
             for(int i=1; i<=N; i++){
                 arr[i] = Integer.parseInt(st.nextToken());
@@ -28,9 +28,7 @@ public class Main {
             }
             else{
                 int idx =  1;
-                while(idx<=N && arr[idx] > score){
-                    idx++;
-                }
+                while(idx<=N && arr[idx] > score) idx++;
                 System.out.println(idx);
             }
         }
