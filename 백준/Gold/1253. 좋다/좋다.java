@@ -32,8 +32,7 @@ public class Main {
     }
 
     public static int canMake(int idx){
-        int l = 0, r = N-1;
-        int now = arr[idx];
+        int l = 0, r = N-1, now = arr[idx];
 
         while(true){
             if(l==idx) l++;
