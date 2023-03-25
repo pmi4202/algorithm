@@ -6,43 +6,51 @@ import java.util.StringTokenizer;
 public class Main {
 
     static int N;
-    static long[] arr;
+    static int[] arr;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
-        arr = new long[N];
+        
+        if(N<=2){
+            System.out.println(0);
+            return;
+        }
+        
+        arr = new int[N];
         for(int i=0; i<N; i++){
-            arr[i] = Long.parseLong(st.nextToken());
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
         Arrays.sort(arr);
         int result = 0;
         for(int i=0; i<N; i++){
-            if(canMake(i)) result++;
+            result += canMake(i);
         }
         System.out.println(result);
     }
 
-    public static boolean canMake(int idx){
+    public static int canMake(int idx){
         int l = 0, r = N-1;
-        long now = arr[idx];
+        int now = arr[idx];
+
         while(true){
             if(l==idx) l++;
-            if(r==idx) r--;
+            else if(r==idx) r--;
             if(l >= r) break;
-            long temp = arr[l] + arr[r];
-            if(temp == now){
-                return true;
+
+            int sum = arr[l] + arr[r];
+            if(sum == now){
+                return 1;
             }
-            else if(temp < now){
+            else if(sum < now){
                 l++;
             }
             else{
                 r--;
             }
         }
-        return false;
+        return 0;
     }
 }
