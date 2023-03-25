@@ -27,15 +27,16 @@ public class Main {
 
     public static boolean canMake(int idx){
         int l = 0, r = N-1;
+        long now = arr[idx];
         while(true){
             if(l==idx) l++;
             if(r==idx) r--;
             if(l >= r) break;
             long temp = arr[l] + arr[r];
-            if(temp == arr[idx]){
+            if(temp == now){
                 return true;
             }
-            else if(temp < arr[idx]){
+            else if(temp < now){
                 l++;
             }
             else{
