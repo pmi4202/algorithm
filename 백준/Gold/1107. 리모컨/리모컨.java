@@ -24,10 +24,10 @@ public class Main {
             return;
         }
         else{
-            int min = Math.abs(100 - N);//+, -로만 갈 때가 최대
+            int min = Math.abs(100 - N);
             for(int i=0; i<min; i++){
-                int l = N-i;
-                if(0 <= l){
+                if(i <= N){
+                    int l = N-i;
                     if(canPress(l)){
                         min = Math.min(min, i + getLen(l));
                         break;
