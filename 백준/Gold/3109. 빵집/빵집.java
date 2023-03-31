@@ -7,7 +7,6 @@ public class Main {
     static int R, C;
     static int[] dx = {-1, 0, 1};
     static char[][] map;
-    static boolean[][] visited;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -15,7 +14,6 @@ public class Main {
         R = Integer.parseInt(st.nextToken());
         C = Integer.parseInt(st.nextToken());
         map = new char[R][C];
-        visited = new boolean[R][C];
 
         for(int i=0; i<R; i++){
             map[i] = br.readLine().toCharArray();
@@ -24,26 +22,23 @@ public class Main {
         int answer = 0;
         for(int i=0; i<R; i++){
             if(map[i][0] == 'x') continue;
-            if(dfs(i, 0)){
-                answer++;
-            }
+            answer += dfs(i, 0);
         }
         System.out.println(answer);
     }
 
-    public static boolean dfs(int x, int y){
+    public static int dfs(int x, int y){
         if(y == C-1){
-            return true;
+            return 1;
         }
 
-        visited[x][y] = true;
+        map[x][y] = 'x';
         for(int i=0; i<3; i++){
             int nx = x + dx[i];
             int ny = y + 1;
-            if(nx<0 || nx>=R || map[nx][ny] == 'x' || visited[nx][ny]) continue;
-            if(dfs(nx, ny)) return true;
+            if(nx<0 || nx>=R || map[nx][ny] == 'x') continue;
+            if(dfs(nx, ny) == 1) return 1;
         }
-//        visited[x][y] = false;
-        return false;
+        return 0;
     }
 }
