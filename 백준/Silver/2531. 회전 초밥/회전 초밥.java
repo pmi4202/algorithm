@@ -8,8 +8,8 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());//접시 수
         int D = Integer.parseInt(st.nextToken());//가짓수
-        int K = Integer.parseInt(st.nextToken());//연속
-        int C = Integer.parseInt(st.nextToken());//쿠폰
+        int K = Integer.parseInt(st.nextToken());//연속해서 먹는 수
+        int C = Integer.parseInt(st.nextToken());//쿠폰 번호
         int[] plates = new int[N];
         int[] record = new int[3001];//해당 번호의 음식 먹은 횟수
 
@@ -29,12 +29,20 @@ public class Main {
         if(N!=K){
             int r = K;
             for(int l=0; l<N-1; l++){
-                if(--record[plates[l]] == 0) cnt--;
-                if(record[plates[r]]++ == 0) cnt++;
+                if(plates[l] != plates[r]){
+                    if(--record[plates[l]] == 0) {
+                        cnt--;
+                    }
+                    if(record[plates[r]]++ == 0) {
+                        cnt++;
+                    }
+                    result = Math.max(result, cnt);
+                }
+
                 if(++r >= N){
                     r%=N;
                 }
-                result = Math.max(result, cnt);
+
             }
         }
 
