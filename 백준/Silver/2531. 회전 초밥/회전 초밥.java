@@ -7,7 +7,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());//접시 수
-        int D = Integer.parseInt(st.nextToken());//가짓수
+        st.nextToken();//가짓수
         int K = Integer.parseInt(st.nextToken());//연속해서 먹는 수
         int C = Integer.parseInt(st.nextToken());//쿠폰 번호
         int[] plates = new int[N];
@@ -37,6 +37,7 @@ public class Main {
                         cnt++;
                     }
                     result = Math.max(result, cnt);
+                    if(result == K+1) break;
                 }
 
                 if(++r >= N){
