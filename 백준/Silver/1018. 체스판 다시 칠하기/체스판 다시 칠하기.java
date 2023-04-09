@@ -35,6 +35,7 @@ public class Main {
             for(int j=sy+6; j>=sy; j-=2){
                 if(start == map[i][j]) cnt++;
             }
+            if(result <= cnt) break;
             start = (start == 'W') ? 'B' : 'W';
         }
         result = Math.min(result, cnt);
