@@ -8,6 +8,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
+        StringBuilder sb = new StringBuilder();
         int T = Integer.parseInt(br.readLine());
         while (T-- > 0) {
             st = new StringTokenizer(br.readLine());
@@ -38,11 +39,12 @@ public class Main {
                     cnt++;
                     arr[now[0]]--;
                     if(now[1] == M) {
-                        System.out.println(cnt);
+                        sb.append(cnt).append("\n");
                         break;
                     }
                 }
             }
         }
+        System.out.println(sb);
     }
 }
