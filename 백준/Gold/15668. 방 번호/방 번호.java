@@ -8,11 +8,12 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
         sb.append(-1);
+        boolean[] used;
 
         for(int i = Math.min(N/2, 98765); i>0; i--){
             int j = N-i;
             if(i==j) continue;
-            boolean[] used = new boolean[10];
+            used = new boolean[10];
 
             if(check(i, used) && check(j, used)){
                 sb = new StringBuilder();
