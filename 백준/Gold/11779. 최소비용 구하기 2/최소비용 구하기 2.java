@@ -4,12 +4,17 @@ import java.util.*;
 
 public class Main {
 
-    static class Road{
+    static class Road implements Comparable<Road> {
         int n2, cost;
 
         public Road(int n2, int cost){
             this.n2 = n2;
             this.cost = cost;
+        }
+
+        @Override
+        public int compareTo(Road o){
+            return this.cost - o.cost;
         }
     }
 
@@ -47,22 +52,22 @@ public class Main {
     public static void dijkstra(int n, int s, int e){
         int[] distance = new int[n+1];
         Arrays.fill(distance, Integer.MAX_VALUE);
-        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[0] - o2[0]);//현재까지 경로값, 현재 위치
+        PriorityQueue<Road> pq = new PriorityQueue<>();
         distance[s] = 0;
-        pq.add(new int[]{0, s});
+        pq.add(new Road(s, 0));//현재까지 경로값, 현재 위치
         while(!pq.isEmpty()){
-            int[] now = pq.poll();
-            if(now[1] == e){
+            Road now = pq.poll();
+            if(now.n2 == e){
                 break;
             }
 
-            for(Road road : roads[now[1]]){
-                int temp = now[0] + road.cost;
+            for(Road road : roads[now.n2]){
+                int temp = now.cost + road.cost;
                 if(temp < distance[road.n2]){
                     distance[road.n2] = temp;
-                    pq.add(new int[]{temp, road.n2});
+                    pq.add(new Road(road.n2, temp));
                     //경로 표시
-                    p[road.n2] = now[1];
+                    p[road.n2] = now.n2;
                 }
             }
         }
