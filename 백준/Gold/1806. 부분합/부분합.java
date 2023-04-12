@@ -16,7 +16,7 @@ public class Main {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        while(l < N && r <= N){
+        while(l < N){
             sum -= arr[l];
             l++;
             while(r < N && sum < S){
