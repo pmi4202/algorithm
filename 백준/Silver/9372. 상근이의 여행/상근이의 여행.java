@@ -14,15 +14,12 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int N = Integer.parseInt(st.nextToken());//국가 수
             int M = Integer.parseInt(st.nextToken());//비행기 수
-            int[][] planes = new int[M][2];
             for(int i=0; i<M; i++){
-                st = new StringTokenizer(br.readLine());
-                planes[i] = new int[]{Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())};
+                br.readLine();
             }
             //
             sb.append(N-1).append("\n");
         }
         System.out.println(sb);
     }
-
 }
