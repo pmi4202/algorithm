@@ -1,11 +1,3 @@
-/* 8:10
-1. LinkedList<Block> puzzles -> table에서 dfs로 Puzzle을 다 분석해서 만들기
-    1-1. 모양은 제일 위쪽 & 왼쪽 값을 (0, 0)으로 판단
-2. board를 돌면서, dfs로 빈칸을 분석해서 넣을 수 있는 퍼즐 있는지 확인!
-    2-2. 칸의 개수가 일치 => 회전 시켜가면서 모양이 일치한 지 판단하기
-    2-3. 썼으면 체크
-빈칸에 맞으면 무조건 끼워넣기 => 최대 개수
-*/
 import java.util.*;
 
 class Block{
@@ -15,52 +7,51 @@ class Block{
 
 class Solution {
     
-    int n, m;
     int[] dx = {-1, 0, 1, 0}, dy = {0, 1, 0, -1};
     
     public int solution(int[][] game_board, int[][] table) {
         int answer = 0;
-        n = table.length;
-        m = table.length;
-        //1.
-        List<Block> puzzles = new ArrayList<>();
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(table[i][j] == 1){
-                    puzzles.add(findOne(table, i, j, 1, 0));
-                }
-            }
-        }
         
-        //2.
-        boolean[] usedPuzzle = new boolean[puzzles.size()];
-        n = game_board.length;
-        m = game_board[0].length;
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(game_board[i][j] == 0){
-                    //빈 칸 찾기
-                    Block block = findOne(game_board, i, j, 0, 1);
-                    
-                    boolean find = false;
-                    for(int k=0; k<puzzles.size(); k++){
-                        if(usedPuzzle[k]) continue;
-                        Block puzzle = puzzles.get(k);
-                        if(canInsert(puzzle, block)){
-                            usedPuzzle[k] = true;
-                            answer+=puzzle.cnt;
-                            break;
-                        }
+        //1. 퍼즐 찾기
+        List<Block> puzzles = new LinkedList<>();
+        findBlocks(table, puzzles, 1, 0);
+        
+        //2. 빈칸 찾기
+        List<Block> blanks = new ArrayList<>();
+        findBlocks(game_board, blanks, 0, 1);
+        
+        //3. 빈칸에 퍼즐 넣을 수 있는지 보기
+        for(Block blank : blanks){
+            for(Block puzzle : puzzles){
+                if(canInsert(puzzle, blank)){
+                    answer+=puzzle.cnt;
+                    puzzles.remove(puzzle);
+                    //사용할 퍼즐이 더이상 없다면 종료
+                    if(puzzles.size() == 0){
+                        return answer;
                     }
-                    
+                    break;
                 }
             }
         }
+            
         return answer;
     }
     
+    public void findBlocks(int[][] map, List<Block> list, int flag, int nflag){
+        int n = map.length;
+        int m = map[0].length;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(map[i][j] == flag){
+                    list.add(findOne(map, n, m, i, j, flag, nflag));
+                }
+            }
+        }
+    }
+    
     //block 하나 찾기
-    public Block findOne(int[][] map, int x, int y, int flag, int blank){
+    public Block findOne(int[][] map, int n, int m, int x, int y, int flag, int blank){
         Block block = new Block();
         Queue<int[]> q = new LinkedList<>();
         q.add(new int[]{x, y});
@@ -68,7 +59,6 @@ class Solution {
         
         while(!q.isEmpty()){
             int[] now = q.poll();
-            
             block.shape[block.cnt++] = now;
             for(int i=0; i<4; i++){
                 int nx = now[0] + dx[i];
@@ -115,6 +105,7 @@ class Solution {
         return false;
     }
     
+    //90도 회전
     public void turn(Block block){
         for(int i=0; i<block.cnt; i++){
             int temp = -block.shape[i][0];
