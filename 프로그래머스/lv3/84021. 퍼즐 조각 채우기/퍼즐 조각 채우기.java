@@ -81,28 +81,33 @@ class Solution {
         
         int size = puzzle.cnt;
         //회전
-        for(int i=0; i<4; i++){
-            boolean isMatch = true;
-            for(int j=0; j<size; j++){
-                int k = 0;
-                for(; k<size; k++){
-                    if(puzzle.shape[j][0] == blank.shape[k][0]
-                       && puzzle.shape[j][1] == blank.shape[k][1]){
-                        break;
-                    }
-                }
-                if(k==size){
-                    isMatch = false;
-                    break;
-                }
-            }
+        for(int i=0; i<3; i++){
             //맞는 퍼즐 찾으면 return true, 아니면 회전시켜보기
-            if(isMatch){
+            if(isSameShape(size, puzzle.shape, blank.shape)){
                 return true;
             }
             turn(puzzle);
         }
+        if(isSameShape(size, puzzle.shape, blank.shape)){
+            return true;
+        }
         return false;
+    }
+    
+    public boolean isSameShape(int size, int[][] shape1, int[][] shape2){
+        for(int j=0; j<size; j++){
+            int k = 0;
+            for(; k<size; k++){
+                if(shape1[j][0] == shape2[k][0]
+                   && shape1[j][1] == shape2[k][1]){
+                    break;
+                }
+            }
+            if(k==size){
+                return false;
+            }
+        }
+        return true;
     }
     
     //90도 회전
