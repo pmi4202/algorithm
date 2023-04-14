@@ -19,14 +19,16 @@ public class Main {
 
         while(!q.isEmpty()){
             int[] now = q.poll();
-            if(now[0] < 0 || step[now[0]] < now[1]){
+            if(step[now[0]] < now[1]){
                 continue;
             }
 
             step[now[0]] = now[1];
             cnt[now[0]]++;
             if(step[K] == Integer.MAX_VALUE){
-                q.add(new int[]{now[0] - 1, now[1] + 1});
+                if(now[0] > 0){
+                    q.add(new int[]{now[0] - 1, now[1] + 1});
+                }
                 if(now[0] < K) {
                     q.add(new int[]{now[0] + 1, now[1] + 1});
                     q.add(new int[]{now[0] * 2, now[1] + 1});
