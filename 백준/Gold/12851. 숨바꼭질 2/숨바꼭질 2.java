@@ -10,24 +10,27 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
-        boolean[] visited = new boolean[200_000];
+        boolean[] visited = new boolean[100001];
         Queue<Integer> q = new LinkedList<>();
         q.add(N);
 
         int step = 0, cnt = 0;
-        outloop : while(!q.isEmpty()){
+        while(!q.isEmpty()){
             for(int i=0, size = q.size(); i<size; i++){
                 int now = q.poll();
                 visited[now] = true;
                 if(now == K){
                     cnt++;
+                    continue;
                 }
                 if(now > 0 && !visited[now - 1]){
                     q.add(now - 1);
                 }
-                if(now < K) {
-                    if(!visited[now + 1]) q.add(now + 1);
-                    if(!visited[now * 2]) q.add(now * 2);
+                if(now + 1 <= 100_000 && !visited[now + 1]){
+                    q.add(now + 1);
+                }
+                if(now * 2 <= 100_000 && !visited[now * 2]){
+                    q.add(now * 2);
                 }
             }
             if(cnt > 0) break;
