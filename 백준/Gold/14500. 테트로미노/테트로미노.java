@@ -39,12 +39,7 @@ public class Main {
         for(int i=3; i<N+3; i++){
             for(int j=3; j<M+3; j++){
                 for(int k=0; k<19; k++){
-                    int sum = map[i][j];
-                    for(int a=0; a<3; a++){
-                        int nx = i + dx[k][a];
-                        int ny = j + dy[k][a];
-                        sum += map[nx][ny];
-                    }
+                    int sum = map[i][j] + map[i+dx[k][0]][j+dy[k][0]] + map[i+dx[k][1]][j+dy[k][1]] + map[i+dx[k][2]][j+dy[k][2]];
                     result = Math.max(result, sum);
                 }
             }
