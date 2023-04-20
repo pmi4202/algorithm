@@ -19,10 +19,11 @@ public class Main {
                 map[i][j] = input.charAt(j-1)-'0';
                 if(map[i][j] == 0){ continue;}
                 if(map[i-1][j] != 0 && map[i-1][j-1] != 0 && map[i][j-1] != 0){
-                    int min = Math.min(map[i-1][j], Math.min(map[i-1][j-1], map[i][j-1]));
-                    map[i][j] = min + 1;
+                    map[i][j] = Math.min(map[i-1][j], Math.min(map[i-1][j-1], map[i][j-1])) + 1;
                 }
-                result = Math.max(result, map[i][j]);
+                if(result < map[i][j]){
+                    result = map[i][j];
+                }
             }
         }
         System.out.println(result*result);
