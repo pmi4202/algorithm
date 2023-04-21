@@ -16,18 +16,18 @@ public class Main {
             int num = Integer.parseInt(br.readLine());
             if(minHeap.peek() <= num){
                 minHeap.offer(num);
-                if(minHeap.size() > maxHeap.size() + 1){
+                if(minHeap.size() > maxHeap.size()){
                     maxHeap.offer(minHeap.poll());
                 }
             }
             else{
                 maxHeap.offer(num);
-                if(maxHeap.size() > minHeap.size()){
+                if(maxHeap.size() > minHeap.size()+1){
                     minHeap.offer(maxHeap.poll());
                 }
             }
 
-            sb.append((i%2 == 0) ? maxHeap.peek() : minHeap.peek()).append("\n");
+            sb.append(maxHeap.peek()).append("\n");
         }
         System.out.println(sb);
     }
