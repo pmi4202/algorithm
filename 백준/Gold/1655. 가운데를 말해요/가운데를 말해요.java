@@ -10,11 +10,12 @@ public class Main {
         PriorityQueue<Integer> maxHeap = new PriorityQueue<>();
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();
 
-        maxHeap.add(-Integer.parseInt(br.readLine()));
-        sb.append(-maxHeap.peek()).append("\n");
+        int mid = Integer.parseInt(br.readLine());
+        maxHeap.add(-mid);
+        sb.append(mid).append("\n");
         for(int i=2; i<=N; i++){
             int num = Integer.parseInt(br.readLine());
-            if(-maxHeap.peek() < num){
+            if(mid < num){
                 minHeap.offer(num);
                 if(minHeap.size() > maxHeap.size()){
                     maxHeap.offer(-minHeap.poll());
@@ -27,7 +28,8 @@ public class Main {
                 }
             }
 
-            sb.append(-maxHeap.peek()).append("\n");
+            mid = -maxHeap.peek();
+            sb.append(mid).append("\n");
         }
         System.out.println(sb);
     }
