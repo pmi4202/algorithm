@@ -43,13 +43,10 @@ public class Main {
                     Block block = new Block();
                     dfs(i, j, map[i][j], visited, block);
                     int size = block.pos.size();
-                    if(size > bigBlock.pos.size()){
+                    if(size > bigBlock.pos.size() || (size == bigBlock.pos.size() && block.rainbowCnt >= bigBlock.rainbowCnt)){
                         bigBlock = block;
                     }
-                    else if(size == bigBlock.pos.size() && block.rainbowCnt >= bigBlock.rainbowCnt){
-                        bigBlock = block;
-                    }
-                    //rainbowblock은 방문 체크 제거
+                    //rainbow는 방문 체크 제거
                     for(int[] pos : block.pos){
                         if(map[pos[0]][pos[1]] == 0) visited[pos[0]][pos[1]] = false;
                     }
