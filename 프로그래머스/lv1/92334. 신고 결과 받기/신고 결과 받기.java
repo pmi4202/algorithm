@@ -15,10 +15,12 @@ class Solution {
             st = new StringTokenizer(r);
             int from = id.get(st.nextToken());
             String to = st.nextToken();
-            if(!reportMap.containsKey(to)){
-                reportMap.put(to, new HashSet<>());
-            }
-            reportMap.get(to).add(from);
+            // if(!reportMap.containsKey(to)){
+            //     reportMap.put(to, new HashSet<>());
+            // }
+            Set<Integer> temp = reportMap.getOrDefault(to, new HashSet<>());
+            temp.add(from);
+            reportMap.put(to, temp);
         }
         
         for(Set<Integer> set : reportMap.values()){
