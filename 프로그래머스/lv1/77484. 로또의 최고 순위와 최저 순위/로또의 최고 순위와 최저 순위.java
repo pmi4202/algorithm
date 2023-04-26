@@ -16,8 +16,8 @@ class Solution {
             }
         }
         answer[0] += answer[1];
-        answer[0] = Math.min(answer[0], 6);
-        answer[1] = Math.min(answer[1], 6);
+        if(answer[0] > 6) answer[0] = 6;
+        if(answer[1] > 6) answer[1] = 6;
         return answer;
     }
 }
