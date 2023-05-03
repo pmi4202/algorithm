@@ -13,37 +13,32 @@ public class Main {
         StringBuilder sb = new StringBuilder();
 
         int N = Integer.parseInt(br.readLine());
-        dp = new int[N+1][N+1];//non, false, true
+        dp = new int[N+1][N+1];
         arr =  new int[N+1];
         st = new StringTokenizer(br.readLine());
         for(int i=1; i<=N; i++){
             arr[i] = Integer.parseInt(st.nextToken());
+            dp[i][i] = 1;
+            if(arr[i-1] == arr[i]){
+                dp[i-1][i] = 1;
+            }
         }
+
+        for(int i=2; i<=N; i++){//간격
+            for(int j=i; j<=N; j++){//기준
+                if(arr[j-i] == arr[j] && dp[j-i+1][j-1] == 1){
+                    dp[j-i][j] = 1;
+                }
+            }
+        }
+
         int M = Integer.parseInt(br.readLine());
         while(M-->0){
             st = new StringTokenizer(br.readLine());
             int S = Integer.parseInt(st.nextToken());
             int E = Integer.parseInt(st.nextToken());
-
-            sb.append(isP(S, E)-1).append("\n");
+            sb.append(dp[S][E]).append("\n");
         }
         System.out.println(sb);
-    }
-
-    public static int isP(int S, int E){
-        if(S >= E){
-            return 2;
-        }
-
-        if(dp[S][E] == 0){
-            if(arr[S] == arr[E]){
-                dp[S][E] = isP(S+1, E-1);
-            }
-            else{
-                dp[S][E] = 1;
-            }
-        }
-
-        return dp[S][E];
     }
 }
