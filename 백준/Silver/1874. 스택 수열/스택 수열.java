@@ -16,7 +16,7 @@ public class Main {
         for(int su : arr){
             while(now <= su){
                 stack.push(now);
-                sb.append("+").append("\n");
+                sb.append("+\n");
                 now++;
             }
             if(su != stack.peek()){
@@ -25,7 +25,7 @@ public class Main {
                 break;
             }
             stack.pop();
-            sb.append("-").append("\n");
+            sb.append("-\n");
         }
         System.out.println(sb);
     }
