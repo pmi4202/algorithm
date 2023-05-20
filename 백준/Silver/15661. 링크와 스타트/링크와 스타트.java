@@ -33,20 +33,12 @@ public class Main {
         }
 
         team[idx] = 1;
-        int score = 0;
+        int[] score = new int[2];
         for(int j=0; j<idx; j++){
-            if(team[j] == 1){
-                score += map[idx][j] + map[j][idx];
-            }
+            score[team[j]] += map[idx][j] + map[j][idx];
         }
-        combination(idx+1, cnt+1, start+score, link);
+        combination(idx+1, cnt+1, start+score[1], link);
         team[idx] = 0;
-        score = 0;
-        for(int j=0; j<idx; j++){
-            if(team[j] == 0){
-                score += map[idx][j] + map[j][idx];
-            }
-        }
-        combination(idx+1, cnt, start, link+score);
+        combination(idx+1, cnt, start, link+score[0]);
     }
 }
