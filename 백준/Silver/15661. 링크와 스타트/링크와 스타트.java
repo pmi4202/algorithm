@@ -22,30 +22,31 @@ public class Main {
             }
         }
 
-        for(int k=N/2; k>0; k--){
-            combination(0, 0, k);
-        }
+        combination(0, 0, 0, 0);
         System.out.println(result);
     }
 
-    public static void combination(int idx, int cnt, int K){
-        if(cnt == K){
-            int[] score = new int[2];
-            for(int i=0; i<N; i++){
-                int t = team[i];
-                for(int j=i+1; j<N; j++){
-                    if(t == team[j]){
-                        score[t] += map[i][j] + map[j][i];
-                    }
-                }
-            }
-            result = Math.min(result, Math.abs(score[0] - score[1]));
+    public static void combination(int idx, int cnt, int start, int link){
+        if(idx == N){
+            result = Math.min(result, Math.abs(start - link));
             return;
         }
-        for(int i=idx; i<N; i++){
-            team[i] = 1;
-            combination(i+1, cnt+1, K);
-            team[i] = 0;
+
+        team[idx] = 1;
+        int score = 0;
+        for(int j=0; j<idx; j++){
+            if(team[j] == 1){
+                score += map[idx][j] + map[j][idx];
+            }
         }
+        combination(idx+1, cnt+1, start+score, link);
+        team[idx] = 0;
+        score = 0;
+        for(int j=0; j<idx; j++){
+            if(team[j] == 0){
+                score += map[idx][j] + map[j][idx];
+            }
+        }
+        combination(idx+1, cnt, start, link+score);
     }
 }
