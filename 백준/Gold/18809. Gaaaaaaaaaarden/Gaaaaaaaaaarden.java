@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
@@ -15,8 +13,9 @@ public class Main {
         }
     }
 
-    static int N, M, max;
+    static int N, M, R, G, max;
     static int[][] map;
+    static List<Pos> soils;//뿌릴 수 있는 땅
     static int[] dx = {-1, 0, 1, 0}, dy = {0, 1, 0, -1};
 
     public static void main(String[] args) throws Exception {
@@ -24,68 +23,64 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        int G = Integer.parseInt(st.nextToken());
-        int R = Integer.parseInt(st.nextToken());
+        G = Integer.parseInt(st.nextToken());
+        R = Integer.parseInt(st.nextToken());
 
         //init
+        soils = new ArrayList<>();
         map = new int[N+2][M+2];
         for(int i=1; i<=N; i++){
             st = new StringTokenizer(br.readLine());
             for(int j=1; j<=M; j++){
                 map[i][j] = st.nextToken().charAt(0) - '0';
+                if(map[i][j] == 2) soils.add(new Pos(i, j));
             }
         }
 
         //combination & simluation
-        combination(0, 0, 0, R, G, new Pos[R], new Pos[G]);
+        combination(0, soils.size(), 0, 0, new int[R], new int[G]);
 
         System.out.println(max);
     }
 
-    public static void combination(int idx, int r, int g, int R, int G, Pos[] reds, Pos[] greens){
+    public static void combination(int idx, int size, int r, int g, int[] reds, int[] greens){
         if(r == R && g == G){
             max = Math.max(max, simulation(reds, greens));
             return;
         }
-        if(idx >= (N+2)*(M+2)){
+        if(idx >= size){
             return;
         }
 
-        int x = idx/(M+2);
-        int y = idx%(M+2);
-        if(map[x][y] == 2){
-            //빨간배양액
-            if(r < R){
-                map[x][y] = 3;
-                reds[r] = new Pos(x, y);
-                combination(idx+1, r+1, g, R, G, reds, greens);
-                map[x][y] = 2;
-            }
-            //초록배양액
-            if (g < G) {
-                map[x][y] = 4;
-                greens[g] = new Pos(x, y);
-                combination(idx+1, r, g+1, R, G, reds, greens);
-                map[x][y] = 2;
-            }
+        //빨간배양액
+        if(r < R){
+            reds[r] = idx;
+            combination(idx+1, size, r+1, g, reds, greens);
+        }
+        //초록배양액
+        if(g < G){
+            greens[g] = idx;
+            combination(idx+1, size, r, g+1, reds, greens);
         }
         //아무것도 안놔둠
-        combination(idx + 1, r, g, R, G, reds, greens);
+        combination(idx + 1, size, r, g, reds, greens);
     }
 
-    public static int simulation(Pos[] reds, Pos[] greens){
+    public static int simulation(int[] reds, int[] greens){
         int flower = 0;
         Queue<Pos> redq = new LinkedList<>();
         Queue<Pos> greenq = new LinkedList<>();
         int[][] visited = new int[N+2][M+2];//방문X:0, 방문O:depth
         int depth = 2;
-        for(Pos red : reds){
-            visited[red.x][red.y] = depth;
-            redq.add(red);
+        for(int red : reds){
+            Pos p = soils.get(red);
+            visited[p.x][p.y] = depth;
+            redq.add(p);
         }
-        for(Pos green : greens){
-            visited[green.x][green.y] = depth;
-            greenq.add(green);
+        for(int green : greens){
+            Pos p = soils.get(green);
+            visited[p.x][p.y] = 1;
+            greenq.add(p);
         }
 
         while(!redq.isEmpty() && !greenq.isEmpty()){
@@ -113,7 +108,7 @@ public class Main {
                         continue;
                     }
                     if(visited[nx][ny] != 0 || map[nx][ny] == 0) continue;
-                    visited[nx][ny] = depth-1;
+                    visited[nx][ny] = 1;
                     greenq.add(new Pos(nx, ny));
                 }
             }
