@@ -1,25 +1,16 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    static class Ball implements Comparable<Ball> {
-        int idx, color, size;
+    static class Ball {
+        int idx, color;
 
-        public Ball(int idx, int color, int size){
+        public Ball(int idx, int color){
             this.idx = idx;
             this.color = color;
-            this.size = size;
-        }
-
-        @Override
-        public int compareTo(Ball b){
-            if(this.size == b.size){
-                return this.color - b.color;
-            }
-            return this.size - b.size;
         }
     }
 
@@ -27,37 +18,30 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
         int N = Integer.parseInt(br.readLine());
-        int[] sum = new int[200_001], result = new int[N];
-        Ball[] balls = new Ball[N];
+        int total = 0;
+        int[] color = new int[200_001];//색깔별 합
+        int[] result = new int[N];//결과
+        ArrayList<Ball>[] balls = new ArrayList[2001];
+
+        for(int i=1; i<=2000; i++) balls[i] = new ArrayList<>();
 
         for(int i=0; i<N; i++){
             st = new StringTokenizer(br.readLine());
-            balls[i] = new Ball(i, Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+            int c = Integer.parseInt(st.nextToken());
+            int s = Integer.parseInt(st.nextToken());
+            balls[s].add(new Ball(i, c));
         }
-        Arrays.sort(balls);
 
-        int i=0, temp = 0;
-        int total = 0;
-        Ball prev = new Ball(-1, -1, -1);
-        while(i<N){
-            if(balls[i].size != prev.size){
-                total += temp;
-                temp = 0;
-            }
-            prev = balls[i];
-            int res = total - sum[prev.color];
-            while(i<N && prev.size == balls[i].size && prev.color == balls[i].color){
-                result[balls[i].idx] = res;
-                sum[prev.color] += prev.size;
-                temp += prev.size;
-                i++;
-            }
+        for(int i=1; i<=2000; i++){
+            for(Ball ball : balls[i]) result[ball.idx] = total - color[ball.color];
+            total += balls[i].size() * i;
+            for(Ball ball : balls[i]) color[ball.color] += i;
         }
 
         //result
         StringBuilder sb = new StringBuilder();
-        for(int a=0; a<N; a++){
-            sb.append(result[a]).append("\n");
+        for(int i=0; i<N; i++){
+            sb.append(result[i]).append("\n");
         }
         System.out.println(sb);
     }
