@@ -20,7 +20,7 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
         int total = 0;
         int[] color = new int[200_001];//색깔별 합
-        int[] result = new int[N];//결과
+        int[] result = new int[N];
         ArrayList<Ball>[] balls = new ArrayList[2001];
 
         for(int i=1; i<=2000; i++) balls[i] = new ArrayList<>();
@@ -38,11 +38,8 @@ public class Main {
             for(Ball ball : balls[i]) color[ball.color] += i;
         }
 
-        //result
         StringBuilder sb = new StringBuilder();
-        for(int i=0; i<N; i++){
-            sb.append(result[i]).append("\n");
-        }
+        for(int i=0; i<N; i++) sb.append(result[i]).append("\n");
         System.out.println(sb);
     }
 }
