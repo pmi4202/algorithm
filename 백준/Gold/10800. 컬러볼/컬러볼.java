@@ -38,22 +38,18 @@ public class Main {
 
         int i=0, temp = 0;
         int total = 0;
-        int prevSize = -1;
+        Ball prev = new Ball(-1, -1, -1);
         while(i<N){
-            if(balls[i].size != prevSize){
+            if(balls[i].size != prev.size){
                 total += temp;
                 temp = 0;
             }
-
-            prevSize = balls[i].size;
-            temp += prevSize;
-            result[balls[i].idx] = total - sum[balls[i].color];
-            sum[balls[i].color] += prevSize;
-            i++;
-            while(i<N && balls[i-1].size == balls[i].size && balls[i].color == balls[i-1].color){
-                result[balls[i].idx] = result[balls[i-1].idx];
-                sum[balls[i].color] += balls[i].size;
-                temp += balls[i].size;
+            prev = balls[i];
+            int res = total - sum[prev.color];
+            while(i<N && prev.size == balls[i].size && prev.color == balls[i].color){
+                result[balls[i].idx] = res;
+                sum[prev.color] += prev.size;
+                temp += prev.size;
                 i++;
             }
         }
@@ -66,14 +62,3 @@ public class Main {
         System.out.println(sb);
     }
 }
-
-/*
-1. 정렬
-2. 총 누적 크기
-3. 색깔별 누적 크기
-
-필요한 자료 구조
-1. 공의 데이터 : idex, 색깔, 크기 
-2. 결과 배열
-3. 누적값 담을 int 2개
- */
