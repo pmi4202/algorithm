@@ -16,9 +16,9 @@ public class Main {
             map.put(extension, map.getOrDefault(extension, 0)+1);
         }
 
-        for(String extension : map.keySet()){
-            sb.append(extension).append(" ")
-                    .append(map.get(extension)).append("\n");
+        for(Map.Entry<String, Integer> entry : map.entrySet()){
+            sb.append(entry.getKey()).append(" ")
+                    .append(entry.getValue()).append("\n");
         }
         System.out.println(sb);
     }
