@@ -19,25 +19,19 @@ class Solution {
         for(int k : course){
             map = new HashMap<>();
             max = 0;
-            for(String order : orders){
-                combination(order, k, 0, 0, new StringBuilder());
-            }
+            for(String order : orders) combination(order, k, 0, 0, new StringBuilder());
             
-            for(Map.Entry<String, Integer> entry : map.entrySet()){
-                max = Math.max(max, entry.getValue());
-            }
+            for(Map.Entry<String, Integer> entry : map.entrySet()) max = Math.max(max, entry.getValue());
             
             if(max < 2) continue;
             
             for(Map.Entry<String, Integer> entry : map.entrySet()){
-                if(entry.getValue() == max){
-                    answer.add(entry.getKey());
-                }
+                if(entry.getValue() == max) answer.add(entry.getKey());
             } 
             
         }
-        Collections.sort(answer);
         
+        Collections.sort(answer);
         return answer;
     }
     
