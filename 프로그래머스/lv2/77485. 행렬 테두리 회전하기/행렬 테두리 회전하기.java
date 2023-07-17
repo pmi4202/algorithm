@@ -1,5 +1,10 @@
 class Point{
     int x, y;
+    
+    public Point(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
 }
 
 class Solution {
@@ -15,61 +20,33 @@ class Solution {
         }
         
         for(int i=0, size = queries.length; i<size; i++){
-            int[] query = queries[i];
-            Point s = new Point();
-            Point e = new Point();
-            
-            if(query[0] < query[2]){
-                s.x = query[0];
-                e.x = query[2];
-            }
-            else{
-                s.x = query[2];
-                e.x = query[0];
-            }
-            
-            if(query[1] < query[3]){
-                s.y = query[1];
-                e.y = query[3];
-            }
-            else{
-                s.y = query[3];
-                e.y = query[1];
-            }
-            answer[i] = turn(map, s, e);
-            // for(int a=1; a<=rows; a++){
-            //     for(int b=1; b<=columns; b++){
-            //         System.out.print(map[a][b]+" ");
-            //     }
-            //     System.out.println();
-            // }
-            
+            answer[i] = turn(map, queries[i][0], queries[i][1], queries[i][2], queries[i][3]);
         }
         
         return answer;
     }
     
-    public int turn(int[][] map, Point s, Point e){
-        int temp = map[s.x][s.y];
+    public int turn(int[][] map, int sx, int sy, int ex, int ey){
+        int temp = map[sx][sy];
         int min = temp;
         
-        for(int i=s.x; i<e.x; i++){
-            map[i][s.y] = map[i+1][s.y];
-            min = Math.min(min, map[i][s.y]);
+        for(int i=sx; i<ex; i++){
+            map[i][sy] = map[i+1][sy];
+            min = Math.min(min, map[i][sy]);
         }
-        for(int j=s.y; j<e.y; j++){
-            map[e.x][j] = map[e.x][j+1];
-            min = Math.min(min, map[e.x][j]);
+        for(int j=sy; j<ey; j++){
+            map[ex][j] = map[ex][j+1];
+            min = Math.min(min, map[ex][j]);
         }
-        for(int i=e.x; i>s.x; i--){
-            map[i][e.y] = map[i-1][e.y];
-            min = Math.min(min, map[i][e.y]);
+        for(int i=ex; i>sx; i--){
+            map[i][ey] = map[i-1][ey];
+            min = Math.min(min, map[i][ey]);
         }
-        for(int j=e.y; j>s.y; j--){
-            map[s.x][j] = map[s.x][j-1];
-            min = Math.min(min, map[s.x][j]);
+        for(int j=ey; j>sy; j--){
+            map[sx][j] = map[sx][j-1];
+            min = Math.min(min, map[sx][j]);
         }
-        map[s.x][s.y+1] = temp;
+        map[sx][sy+1] = temp;
     
         
         return min;
