@@ -27,10 +27,12 @@ class Solution {
     }
     
     public int getMinDistance(String[] board){
+        
         int result = 0;
         Queue<int[]> q = new LinkedList<>();
-        q.add(new int[]{rx, ry});
         boolean[][][] visited = new boolean[r][c][4];
+        
+        q.add(new int[]{rx, ry});
         
         for(int i=0; i<4; i++) visited[rx][ry][i] = true;
         
@@ -41,8 +43,13 @@ class Solution {
                 int[] now = q.poll();
                     
                 for(int j=0; j<4; j++){
-                    int[] next = getNextPos(board, visited, now[0], now[1], j);
-                    if(next == null || (now[0] == next[0] && now[1] == next[1])) continue;
+                    int nx = now[0] + dx[j];
+                    int ny = now[1] + dy[j];
+                    
+                    if(!blockCheck(board, nx, ny) || visited[nx][ny][j]) continue;
+                    
+                    int[] next = getNextPos(board, visited, nx, ny, j);
+                    if(next == null) continue;
                     
                     if(next[0] == gx && next[1] == gy){
                         return result;
@@ -52,30 +59,37 @@ class Solution {
                     
                 }
             }
-            // if(result == 3) break;
+            
         }
+        
         return -1;
     }
     
     public int[] getNextPos(String[] board, boolean visited[][][], int x, int y, int dir){
         
+        visited[x][y][dir] = true;
+        
         while(true){
             int nx = x + dx[dir];
             int ny = y + dy[dir];
             
-            if(0<=nx && nx<r && 0<=ny && ny<c && board[nx].charAt(ny) != 'D'){
-                if(visited[nx][ny][dir]) return null;
-                
-                visited[nx][ny][dir] = true;
-                
-                x = nx;
-                y = ny;
-            }
-            else{
+            if(!blockCheck(board, nx, ny)){
                 break;
             }
+            
+            if(visited[nx][ny][dir]) return null;
+
+            visited[nx][ny][dir] = true;
+
+            x = nx;
+            y = ny;
+           
         }
         return new int[]{x, y};
+    }
+    
+    private boolean blockCheck(String[] board, int x, int y){
+        return (0<=x && x<r && 0<=y && y<c && board[x].charAt(y) != 'D');
     }
 }
 /*
