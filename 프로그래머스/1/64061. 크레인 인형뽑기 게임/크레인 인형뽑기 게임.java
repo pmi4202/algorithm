@@ -1,35 +1,46 @@
-import java.util.*;
 class Solution {
+    
     public int solution(int[][] board, int[] moves) {
-        int answer = 0;
-        Stack<Integer> stack = new Stack<>();
-        // 인접 리스트
-        int len = board.length;
-        ArrayList<Integer>[] list = new ArrayList[len + 1];
-        for(int i = 1; i <= len; i++) list[i] = new ArrayList<>();   
-                
-        for(int i = len - 1; i >= 0; i--) {
-            for(int j = len - 1; j >= 0; j--) {
-                if(board[i][j] == 0) continue;
-                list[j + 1].add(board[i][j]);
-            }
-        }
+        int answer = 0, n = board.length, now = 0;
+        int[] height = new int[n];
+        int[] arr = new int[moves.length+1];
         
-        for(int move : moves) {
-            if(list[move].size() == 0) continue;
-            int size = list[move].size() - 1;
-            int sel = list[move].get(size);
-            if(!stack.isEmpty() && stack.peek() == sel) {
-                stack.pop();
-                answer += 2;
-            } else {
-                stack.push(sel);
-            }
-            list[move].remove(size);
-        }
+        init(n, board, height, arr);
+        
+        //simulation
+        for(int m : moves){
+            m--;
             
+            //인형이 없다면
+            if(height[m] >= n) continue;
+            
+            //인형이 있다면
+            int next = board[height[m]][m];
+            height[m]++;
+            
+            if(arr[now] != next){
+                arr[++now] = next;
+            }
+            else{
+                now--;
+                answer++;
+            }
+        }
         
-        return answer;
+        return answer*2;
     }
     
+    public void init(int n, int[][] board, int[] height, int[] arr){
+        arr[0] = -1;
+        
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n ;j++){
+                if(board[j][i] > 0){
+                    height[i] = j;
+                    break;
+                }
+            }
+        }
+        
+    }
 }
