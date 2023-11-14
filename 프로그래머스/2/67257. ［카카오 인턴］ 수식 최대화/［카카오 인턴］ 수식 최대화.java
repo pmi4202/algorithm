@@ -1,48 +1,48 @@
 import java.util.*;
 
 class Solution {
-    
-    static long answer = 0;
-    static char[] op = new char[3];
-    
+
     public long solution(String expression) {
-        permutation(expression, "+-*", 0, 0, 0);
+        String[][] opSet = {
+            {"+", "-", "*"},
+            {"-", "+", "*"},
+            {"+", "*", "-"},
+            {"-", "*", "+"},
+            {"*", "+", "-"},
+            {"*", "-", "+"}
+        };
+
+        long answer = 0;
+
+        for(String[] ops : opSet){
+            long temp = splitExpression(expression, ops, 0);
+            if(temp < 0) temp *= -1;
+
+            answer = Math.max(answer, temp);
+        }
         return answer;
     }
-    
-    public long calculation(int idx, String expression) {
-        if(idx > 2) {
+
+    public long splitExpression(String expression, String[] ops, int idx){
+        if(idx >= 3){
             return Integer.parseInt(expression);
         }
+
+        StringTokenizer st = new StringTokenizer(expression, ops[idx]);
         
-        StringTokenizer st = new StringTokenizer(expression, String.valueOf(op[idx]));
+        long result = splitExpression(st.nextToken(), ops, idx+1);
         
-        long temp = calculation(idx + 1, st.nextToken());
-        
-        while(st.hasMoreTokens()) {
-            long num = calculation(idx + 1, st.nextToken());
-            switch(op[idx]){
-                    case '+' -> temp += num;
-                    case '-' -> temp -= num;
-                    case '*' -> temp *= num;
-            }
-        }    
-        
-        return temp;        
-    }
-    
-    public void permutation(String expression, String ops, int idx, int cnt, int visited) {
-        if(cnt == 3) {
-            long temp = Math.abs(calculation(0, expression));
-            answer = Math.max(answer, temp);
-            return;
+        char op = ops[idx].charAt(0);
+        if(op == '+'){
+            while(st.hasMoreTokens()) result += splitExpression(st.nextToken(), ops, idx+1);
+        } else if(op == '-'){
+            while(st.hasMoreTokens()) result -= splitExpression(st.nextToken(), ops, idx+1); 
+        } else{
+            while(st.hasMoreTokens()) result *= splitExpression(st.nextToken(), ops, idx+1); 
         }
-        for(int i = 0; i < ops.length(); i++) {
-            if((visited & (1<<i)) == 0) {
-                op[cnt] = ops.charAt(i);
-                permutation(expression, ops, idx + 1, cnt + 1, visited | (1<<i));
-            }
-        }
+        
+        return result;
+
     }
-    
+
 }
