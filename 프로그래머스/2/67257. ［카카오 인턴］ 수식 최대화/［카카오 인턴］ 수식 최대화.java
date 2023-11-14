@@ -1,70 +1,52 @@
+import java.util.*;
 
 class Solution {
     
+    static long answer = 0;
+    static char[] op = new char[3];
+    static boolean[] visited= new boolean[3];
     
-    public long solution(String expression) {
-        String[][] opSet = {
-            {"+", "-", "*"},
-            {"-", "+", "*"},
-            {"+", "*", "-"},
-            {"-", "*", "+"},
-            {"*", "+", "-"},
-            {"*", "-", "+"}
-        };
+    public long solution(String expression) {        
         
-        long answer = 0;
-        
-        for(String[] ops : opSet){
-            long temp = splitExpression(expression, ops, 0);
-            if(temp < 0) temp *= -1;
-            
-            answer = Math.max(answer, temp);
-        }
+        permutation(expression, "+-*", 0, 0);
         return answer;
     }
     
-    public long splitExpression(String expression, String[] ops, int idx){
-        if(idx >= 3){
+    public long calculation(int idx, String expression) {
+        if(idx > 2) {
             return Integer.parseInt(expression);
         }
         
-        String[] subs = expression.split("\\"+ops[idx]);
-        int size = subs.length;
+        StringTokenizer st = new StringTokenizer(expression, String.valueOf(op[idx]));
         
-        if(size == 1){
-            return splitExpression(expression, ops, idx+1);
-        }
-        else{
-            long[] arr = new long[size];
-            for(int i=0; i<size; i++){
-                arr[i] = splitExpression(subs[i], ops, idx+1);
+        long temp = calculation(idx + 1, st.nextToken());
+        
+        while(st.hasMoreTokens()) {
+            long num = calculation(idx + 1, st.nextToken());
+            switch(op[idx]){
+                    case '+' -> temp += num;
+                    case '-' -> temp -= num;
+                    case '*' -> temp *= num;
             }
-            
-            return calculate(arr, ops[idx].charAt(0));
-            
-        }
+        }    
         
+        return temp;        
     }
     
-    public long calculate(long[] arr, char op){
-        long result = 0;
-        
-        switch(op){
-            case '+':
-                for(long n : arr) result += n;
-                break;
-            case '-':
-                result += arr[0]*2;
-                for(long n : arr) result -= n;
-                break;
-            case '*':
-                result = 1;
-                for(long n : arr) result *= n;
-                break;
+    public void permutation(String expression, String ops, int idx, int cnt) {
+        if(cnt == 3) {
+            long temp = Math.abs(calculation(0, expression));
+            answer = Math.max(answer, temp);
+            return;
         }
-        
-        return result;
+        for(int i = 0; i < ops.length(); i++) {
+            if(!visited[i]) {
+                visited[i] = true;
+                op[cnt] = ops.charAt(i);
+                permutation(expression, ops, idx + 1, cnt + 1);
+                visited[i] = false;
+            }
+        }
     }
-    
     
 }
