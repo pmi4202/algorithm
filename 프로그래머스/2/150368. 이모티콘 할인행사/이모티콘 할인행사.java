@@ -36,7 +36,6 @@ class Solution {
                 answer[1] = Math.max(answer[1], result[1]);
             }
             
-            // System.out.println(Arrays.toString(pricePerDiscount));
             return;
         }
         
@@ -55,8 +54,6 @@ class Solution {
         
         for(int[] user : users){
             limit[(user[0]-1)/10+1].add(user[1]);
-            // System.out.println(user[0] + ", " + user[1]);
-            // System.out.println(limit[2].get(0));
         }
     }
     
