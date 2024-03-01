@@ -3,14 +3,13 @@ import java.util.*;
 class Solution {
     
     public int solution(int[] arrayA, int[] arrayB) {
-        
         return Math.max(getResultInA(arrayA, arrayB), getResultInA(arrayB, arrayA));
     }
     
     private int getResultInA(int[] a, int[] b){
         int result = 0;
         
-        //1.
+        //1. 각 배열의 첫 번째 인자의 인수들을 후보로 추출
         int root = (int)Math.sqrt(a[0]);
         
         List<Integer> candidates = new ArrayList<>();
@@ -22,15 +21,16 @@ class Solution {
         }
         candidates.add(a[0]);
         
+        //2. 큰 숫자부터 검사할 수 있도록 정렬
         Collections.sort(candidates, Comparator.reverseOrder());
         
         
-        //2. 
+        //3. a의 값을 다 나눌 수 있지만, b의 값은 어떤 것도 못 나누는 값 체크
         for(int num : candidates){
-            //2-1.
+            //3-1.
             boolean all = canDivideAll(num, a);
             if(!all) continue;
-            //2-2.
+            //3-2.
             boolean any = cantDivideAny(num, b);
             if(!any) continue;
             
@@ -44,28 +44,15 @@ class Solution {
     
     private boolean canDivideAll(int num, int[] arr){
         for(int a : arr){
-            if(a % num != 0){
-                return false;
-            }
+            if(a % num != 0) return false;
         }
         return true;
     }
     
     private boolean cantDivideAny(int num, int[] arr){
         for(int a : arr){
-            if(a % num == 0){
-                return false;
-            }
+            if(a % num == 0) return false;
         }
         return true;
     }
 }
-
-//철수의 인자들과 영희의 인자들과 겹치지 않는 수
-/*
-2, 7, 14 | 5, 7 35 | 7 17 119
-//
-
-2, 9, 18 | 2, 3, 5, 6, 10, 15, 30 | 
-
-*/
