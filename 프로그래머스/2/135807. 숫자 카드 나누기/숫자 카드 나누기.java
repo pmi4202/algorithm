@@ -27,15 +27,10 @@ class Solution {
         
         //3. a의 값을 다 나눌 수 있지만, b의 값은 어떤 것도 못 나누는 값 체크
         for(int num : candidates){
-            //3-1.
-            boolean all = canDivideAll(num, a);
-            if(!all) continue;
-            //3-2.
-            boolean any = cantDivideAny(num, b);
-            if(!any) continue;
-            
-            result = num;
-            break;
+            if(canDivideAll(num, a) && cantDivideAny(num, b)){
+                result = num;
+                break;
+            }
         }
         
         return result;
