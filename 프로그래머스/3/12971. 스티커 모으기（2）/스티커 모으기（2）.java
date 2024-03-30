@@ -1,9 +1,9 @@
 class Solution {
     public int solution(int sticker[]) {
         int size = sticker.length;
-        int answer = 0;
         
-        if(size <= 3){
+        if(size <= 2){
+            int answer = 0;
             for(int i=0; i<size; i++){
                 answer = Math.max(answer, sticker[i]);
             }
@@ -14,17 +14,12 @@ class Solution {
         
         //1. use first
         dp[0][1] = sticker[0];
-        dp[0][3] = sticker[0] + sticker[2];
-        for(int i=4; i<=size; i++) dp[0][i] = Math.max(dp[0][i-3], dp[0][i-2]) + sticker[i-1];
-        answer = Math.max(dp[0][size-1], dp[0][size-2]);
+        for(int i=2; i<size; i++) dp[0][i] = Math.max(dp[0][i-1], dp[0][i-2]+ sticker[i-1]) ;
         
         //2. not use first
-        dp[1][2] = sticker[1];
-        dp[1][3] = sticker[2];
-        for(int i=4; i<=size; i++) dp[1][i] = Math.max(dp[1][i-3], dp[1][i-2]) + sticker[i-1];
-        answer = Math.max(answer, Math.max(dp[1][size-1], dp[1][size]));
+        for(int i=2; i<=size; i++) dp[1][i] = Math.max(dp[1][i-1], dp[1][i-2] + sticker[i-1]) ;
         
-        return answer;
+        return Math.max(dp[0][size-1], dp[1][size]);
     }
     
 }
