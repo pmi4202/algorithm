@@ -43,7 +43,7 @@ public class Main {
         //2.
         Ball redBall = searchPos(n, m, 'R', map);
         Ball blueBall = searchPos(n, m, 'B', map);
-        int result = bfs(redBall, blueBall, map);
+        int result = bfs(n, m, redBall, blueBall, map);
         System.out.println(result);
     }
 
@@ -59,11 +59,13 @@ public class Main {
         return null;
     }
 
-    private static int bfs(Ball redBall, Ball blueBall, char[][] map){
+    private static int bfs(int n, int m, Ball redBall, Ball blueBall, char[][] map){
+        boolean[][][][] visited = new boolean[n][m][n][m];
         int[] dx = {-1, 0, 1, 0}, dy = {0, 1, 0, -1};
 
         Queue<Ball[]> q = new LinkedList<>();
         q.add(new Ball[]{redBall, blueBall});
+        visited[redBall.x][redBall.y][blueBall.x][blueBall.y] = true;
         int step = 0;
 
         while(!q.isEmpty()){
@@ -107,7 +109,10 @@ public class Main {
                         if(map[nextRed.x][nextRed.y] == 'O'){
                             return step;
                         } else if(map[nextBlue.x][nextBlue.y] != 'O'){
-                            q.add(new Ball[] {nextRed, nextBlue});
+                            if(!visited[nextRed.x][nextRed.y][nextBlue.x][nextBlue.y]){
+                                visited[nextRed.x][nextRed.y][nextBlue.x][nextBlue.y] = true;
+                                q.add(new Ball[] {nextRed, nextBlue});
+                            }
                         }
                     }
                 }
