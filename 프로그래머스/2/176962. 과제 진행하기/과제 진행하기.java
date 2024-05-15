@@ -10,10 +10,6 @@ class Plan implements Comparable<Plan> {
         this.playTime = playTime;
     }
     
-    public boolean isDone(){
-        return playTime <= 0;
-    }
-    
     @Override
     public int compareTo(Plan o){
         return this.start - o.start;
@@ -53,8 +49,8 @@ class Solution {
         }
         
         answer.add(planList[count-1].subject);
-        while(!inProcessStack.isEmpty()) answer.add(inProcessStack.pop().subject);
         
+        while(!inProcessStack.isEmpty()) answer.add(inProcessStack.pop().subject);
         
         return answer;
     }
